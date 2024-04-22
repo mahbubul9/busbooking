@@ -51,18 +51,30 @@
 
                             <div class="lg:w-full min-h-2  relative">
                                 <p class="text-sm p-2">GOING FROM</p>
-                                <button class="text-[12px] text-red-400 w-[22px] min-h-[22px] grid place-content-center border border-red-500 rounded-full bg-white absolute top-[20%] -right-[8px]">⮂</button>
+                                <button id="button" class="text-[12px] text-red-400 w-[22px] min-h-[22px] grid place-content-center border border-red-500 rounded-full bg-white absolute top-[20%] -right-[8px]">⮂</button>
                                 <div class="autocomplete mx-auto w-64 relative">
-                                    <input id="fromInput" type="text" placeholder="Select your city" class="p-1 border  rounded-md w-full">
-                                    <ul id="fromUL" class="absolute top-10 left-0 w-full bg-white border rounded-md shadow-md hidden"></ul>
+                                    
+                                    
+                                
+                                    <select id="from-input" placeholder="Select your city" class="p-1 border rounded-md w-full">
+                                      <option value="Dhaka">Dhaka</option>
+                                      <option value="Rajshahi">Rajshahi</option>
+                                      <option value="Chittagong">Chittagong</option>
+                                      <option value="Barisal">Barisal</option>
+                                    </select>
                                 </div>
+                                
                             </div>
                                                         <!-- Left Part No-2-->
                             <div class="lg:w-full min-h-2  relative">
                                 <p class="text-sm p-2 mx-3">GOING TO</p>
                                 <div class="autocomplete mx-auto w-64 relative">
-                                    <input id="toInput" type="text" placeholder="Select your city" class="p-1 border rounded-md w-full">
-                                    <ul id="toUL" class="absolute top-10 left-0 w-full bg-white border rounded-md shadow-md hidden"></ul>
+                                    <select id="to-input" placeholder="Select your city" class="p-1 border rounded-md w-full">
+                                        <option value="Dhaka">Dhaka</option>
+                                        <option value="Rajshahi">Rajshahi</option>
+                                        <option value="Chittagong">Chittagong</option>
+                                        <option value="Barisal">Barisal</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -71,8 +83,8 @@
                         <div class="w-full min-h-10 border border-red-500 rounded-md grid grid-cols-2">
                             <div class="lg:w-full min-h-2  relative">
                                 <p class="text-sm p-2">JOURNEY DATE</p>
-                                <div class="calendar-input-container">
-                                    <input type="date" placeholder="select date" class="p-1 border rounded-md w-full">
+                                <div id="to-date" class="calendar-input-container">
+                                    <input type="date" id="date-input" placeholder="select date" class="p-1 border rounded-md w-full">
                                 </div>
                             </div>
                             <div class="lg:w-full min-h-2  relative">
@@ -104,87 +116,99 @@
                 <!-- Preloader -->
 
                 <div class="preloader hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50">
-                    <div class="loader border-4 border-t-4 border-gray-200 rounded-full h-10 w-10 animate-spin mx-auto mt-20"></div>
+                    <div class="loader border-10 border-t-4 border-yellow-500 rounded-full h-16 w-16 animate-spin mx-auto mt-20"></div>
                 </div>
         
                 
-                <div id="search-results" class="mt-4">
-                    <!-- Display search results here -->
-                </div>
+               
             </div>
             
         </div>
     </div>
 
-         <script>
-                        var cities = [
-                            "Rajshahi", "Dhaka", "Chittagong", "Khulna", "Barisal", ];
-                        
-                    
-                        // Autocomplete  for "GOING FROM" city
-
-                        var fromInput = document.getElementById("fromInput");
-                        var fromUL = document.getElementById("fromUL");
-                    
-                        fromInput.addEventListener("input", function() {
-                            var filter = fromInput.value.toUpperCase();
-                            fromUL.innerHTML = ""; 
-                            cities.forEach(function(city) {
-                                if (city.toUpperCase().startsWith(filter)) {
-                                    var li = document.createElement("li");
-                                    li.textContent = city;
-                                    li.classList.add("p-2", "cursor-pointer");
-                                    li.addEventListener("click", function() {
-                                        fromInput.value = city;
-                                        fromUL.innerHTML = ""; 
-                                    });
-                                    fromUL.appendChild(li);
-                                }
-                            });
-                        });
-                    
-                        // Autocomplete  for "GOING TO" city
-
-                        var toInput = document.getElementById("toInput");
-                        var toUL = document.getElementById("toUL");
-                    
-                        toInput.addEventListener("input", function() {
-                            var filter = toInput.value.toUpperCase();
-                            toUL.innerHTML = ""; 
-                    
-                            cities.forEach(function(city) {
-                                if (city.toUpperCase().startsWith(filter)) {
-                                    var li = document.createElement("li");
-                                    li.textContent = city;
-                                    li.classList.add("p-2", "cursor-pointer");
-                                    li.addEventListener("click", function() {
-                                        toInput.value = city;
-                                        toUL.innerHTML = ""; 
-                                    });
-                                    toUL.appendChild(li);
-                                }
-                            });
-                        });
-                    </script>
+    <div id="search-results" class=" m-auto left-16 top-8 p-16" > 
+        <!-- Display search results here -->
+    </div>
        
     
         <script>
+function performSearch() {
 
-            function performSearch() {
-                // Show the preloader
-                document.querySelector(".preloader").classList.remove("hidden");
-    
-                
-                setTimeout(() => {
-                    
-                    document.querySelector(".preloader").classList.add("hidden");
-    
-                    
-                    document.getElementById("search-results").innerHTML = "<p class='text-gray-700'> </p>";
-                }, 2000); 
-            }
+    const preloader = document.querySelector(".preloader");
+    preloader.classList.remove("hidden");
+    const jsonData = [
+    {
+        "from": "Dhaka",
+        "to": "Chittagong",
+        "fare": 1100,
+        "date":"11-06-24"
+    },
+    {
+        "from": "Dhaka",
+        "to": "Chittagong",
+        "fare": 1100,
+        "date":"30-04-24"
+    },
+    {
+        "from": "Dhaka",
+        "to": "Chittagong",
+        "fare": 1100,
+        "date":"01-05-24"
+    },
+    {
+        "from": "Barisal",
+        "to": "Chittagong",
+        "fare": 900,
+        "date":"11-05-24"
+    },
+    {
+        "from": "Barisal",
+        "to": "Chittagong",
+        "fare": 1200,
+        "date":"21-05-24"
+    },
+    {
+        "from": "Barisal",
+        "to": "Chittagong",
+        "fare": 900,
+        "date":"14-05-24"
+    },
+    {
+        "from": "Barisal",
+        "to": "Rajshahi",
+        "fare": 1900,
+        "date":"28-04-24"
+    },
+    {
+        "from": "Barisal",
+        "to": "Rajshahi",
+        "fare": 1900,
+        "date":"02-05-24"
+    }
+];
 
-           
+    const searchResultsElement = document.getElementById("search-results");
+    searchResultsElement.innerHTML = ""; 
+
+    const fromInput = document.getElementById("from-input").value;
+    const toInput = document.getElementById("to-input").value;
+    const dateInput = document.getElementById("date-input").value;
+    const filteredData = jsonData.filter(item => {
+        return item.from === fromInput && item.to === toInput;
+    });
+    setTimeout(() => {
+        
+        preloader.classList.add("hidden");
+
+
+    filteredData.forEach(item => {
+        const paragraph = document.createElement("p");
+        paragraph.textContent = `From: ${item.from}, To: ${item.to}, Fare: ${item.fare}, Date: ${item.date}`;
+        searchResultsElement.appendChild(paragraph);
+    });},2000);
+}
+
+
         </script>
         
 </body>
